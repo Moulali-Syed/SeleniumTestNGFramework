@@ -1,0 +1,20 @@
+If u create a test method in src/main/java , then u will get error with the statement
+import org.testng.annotations.Test;
+
+This is because of the dependencies which ever we added , they have scope tag which by default will be set as
+<scope>test</scope>
+
+this is because we can create test method in src/test/java folder without issues
+
+We can also create the Test methods in src/main/java , if we change this scope parameter in the dependency of pom.xml file
+<scope>compile</scope>
+Then refresh maven project
+Now dependency issue will be resolved
+
+if we want to create Test methods in src/main/java - then only change to this <scope>compile</scope>
+
+if we want to create Test methods in src/test/java - then keep it default - <scope>test</scope>
+
+
+
+============================================================================================================================================

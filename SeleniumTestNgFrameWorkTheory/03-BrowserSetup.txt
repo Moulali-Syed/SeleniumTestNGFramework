@@ -1,0 +1,62 @@
+In order to communicate our WebDriver with the browser , we need a driver specific to that browser , we can install it
+from google , download chrome driver compatiable with the chrome browser on our machine
+
+chromedriver.exe 
+
+
+package org.selenium;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase {
+
+	
+	@Test
+	public void dummyTest() {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://askomdch.com");
+	}
+}
+
+
+in maven repo search WebDriverManager and include the below dependency into pom.xml file
+
+<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+<dependency>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>webdrivermanager</artifactId>
+    <version>5.1.1</version>
+</dependency>
+
+
+
+
+if we use this for browser path --> System.setProperty("webdriver.chrome.driver", "pathHere");
+
+Then our path of chromedriver , should be same in all the machines, which is hard to maintain
+
+so we can set the path in Environmental variables
+
+open Environmental variables--> System Variables --> Select Path --> click on Edit
+--> add a new entry --> give path of the folder that has chrome driver executable i.e chromedriver.exe folder path
+like D:\Software\Selenium  and paste it --> ok --> ok --> ok
+
+
+now open command prompt and write 
+chromedriver
+
+restart intelliJ or eclipse 
+now our code will directly run with below steps only
+
+	@Test
+	public void dummyTest() {
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://askomdch.com");
+	}
+

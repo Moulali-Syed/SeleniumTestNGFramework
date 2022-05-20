@@ -1,0 +1,37 @@
+package org.selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase {
+
+	
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://askomdch.com");
+		
+		//maximize 
+		driver.manage().window().maximize();
+		driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
+		driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
+		driver.findElement(By.cssSelector("button[value='Search']")).click();
+		
+		//validate search functionality in the application using assert statements , if
+		//we dont assert if the search functionality is broken we dont know that whether it is working or not
+		Assert.assertEquals(driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText()), "Search results: “blue”");
+	}
+}
+
+/*
+
+#menu-item-1227 > a
+
+*/

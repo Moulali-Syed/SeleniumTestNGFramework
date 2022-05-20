@@ -1,0 +1,11 @@
+If we dont set the driver path we will get error , that is we r not writing System.setProperty("","path");
+java.lang.IllegalStateException: The path to the driver executable The path to the driver executable must be
+ set by the webdriver.chrome.driver system property; for more information, see https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver.
+
+=========================================================================================================================================================
+If we are not providing proper wait time , when there is some ajax call happening then we will get error
+org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"css selector","selector":"a[title='View cart']"}
+  (Session info: chrome=101.0.4951.67)
+=========================================================================================================================================================
+stale element exception - when the element is not present in DOM tree , we will get this error
+provide some wait it will resolve

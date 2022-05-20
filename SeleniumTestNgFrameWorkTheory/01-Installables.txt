@@ -1,0 +1,60 @@
+Install Java JDK , whichever is LTS version
+install Eclipse
+
+===========================================================================================
+Setup project :
+Create a maven Project , skip archetype slection[checkmark this] --> Next --> give some groupid , artifact id(will be project name) , finish
+Thus we will get Standard Maven Project strucuture
+src/test , src/main folders will be present
+===========================================================================================
+Now open pom.xml 
+add dependencies
+
+goto maven repo 
+1.search selenium java
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.1.4</version>
+</dependency>
+2.search testng
+	<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.4.0</version>
+    <scope>test</scope>
+</dependency>
+
+Thus maven depencies are added to our project
+===========================================================================================
+Now in src/test/java
+create a package
+with name ---> org.selenium
+should be in lower case, multiple words seperated by .
+
+Now create a class , name it MyFirstTestCase - click Finish
+
+
+package org.selenium;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+public class MyFirstTestCase {
+
+	
+	@Test
+	public void dummyTest() {
+		WebDriver driver = new ChromeDriver();
+	}
+}
+
+===========================================================================================
+Add testNg plugin from eclipse market place
+
+Now right click on project --> properties --> java build path --> libraries -->JRE System Libraries click on it --> then click on Edit
+--> select java se 15 --> Apply and close
+

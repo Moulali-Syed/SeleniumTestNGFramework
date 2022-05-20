@@ -1,0 +1,69 @@
+1.Non atomic Tests:
+	in our testcases we prepared multiple functionalities are there what if search and the checkOut both functionalities are not working
+	it will first fail at search functionality , then automation team will report the bug , dev will fix it , then we run then we see checkout
+	is not working , thus a potential loss to customer because checkout is not working
+
+2.code duplication
+	2 test cases 90% of code is same
+	violating DRY - thus we must use Page Object Model to make tests atomic
+
+3.duplicate element definitions
+	if there is change in one attribute we have to make changes every where , we used that elements
+	we must use POM , by defining elements specific to page
+
+4.user and application state dependencies
+		we see our test case is depending on the default system behaviour , like default payment is Direct bank transfer
+		what if developer changes it in future as Cash on delivery , then testcase may fail because it is not selecting
+		the payment method 
+		like wise default country , we r not selecting , what if it chnages again testcase will fail
+		
+
+5.Non Readable Tests:
+	tests we made are not readable , for a non technical person it will become hard to understand
+	we must avoid this technical information , we must follow some standards
+	we should optimise code , that we have actual business requirement logic , not the selenium imports in all testcases
+
+6.duplicate driver intialization code
+	both testcases has the same driver initialization
+	we should move these into a common method , our testcase should not bother about these things
+
+7.static sleeps
+	we r using Thread.sleep - synchronization issues
+	this may lead to wastage of time , and if we run same testcase in cloud there it may take more time 
+	so must use implicit, explicit, fluent wait
+
+8.hard coded test data
+	username , password , address
+	what if we change address then we have to make changes every where , so good to have this in config files or excel files
+
+9.hardcoded static text
+	the text we r validating is also static, what if dev team changes the text
+	we may place it in xml files , instead of changing in all testcases
+
+10.lacking multiple browser support
+	we r able to run only one browser with our code
+	we can use system property and pass thru maven commands
+
+11.lacking multiple environment support
+	many times our code must support mutiple environment
+	but our code has fixed url , our code must support multiple environments
+
+12.hardcoded driver executable path and manual driver management
+	System.setProperty - we handled with env variables , but still an issue
+	our chrome must be compatiable 
+	so we can use a  library for automatic chromedriver choosing
+
+13.stale browser instances
+	after every testcase the driver must quit thus closes browser
+	we should not use try catch , we can use testNG annotation
+
+
+
+our goal:
+good practices
+Readable ,maintainable , scalable
+DRY - donot repeat yourself
+SRP - Single responsibility principle
+OOP - encapsulation , inheritance, composition and interface and polymorphism
+	
+	
