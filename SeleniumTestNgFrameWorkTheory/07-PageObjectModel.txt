@@ -1,0 +1,714 @@
+Good Pratices:
+						Use Page Object Model Design:
+Each page is represented by a class
+contains UI elements definitions and methods for user actions
+Fluent Interface and Builder pattern 
+
+Advantages:
+Encapsulation[data hiding and showing what is necessary]
+Some level of SRP
+Reusability[ once login page is created it can be used in all testcases]
+Readability
+Low maintenance
+
+Thumb rules:
+Good names
+Private Variables
+No assertion(except for asserting page Title)
+No other task other than the user action
+Avoid bulky page objects
+
+======================================================================================
+Create Base test and Driver Manager:
+
+In the code we have written we r using the same browser invocation steps , driver initialization 
+Now lets use TestNG @BeforeTest and @AfterTest
+
+Thus we create a class and that will be INHERITED by all testcases - Inheritance [used in Base Class for browser , driver , initialization - termination]
+
+Create a new package inside src/test/java - with name   org.selenium.pom this will create a package inside the org.selenium
+[if it is showing flat , then in package explorer pane , click on three dots -->package representation --> hierarchical]
+create a class BaseTest
+
+Then create a new package org.selenium.factory - then create a class DriverManager
+
+
+________________________________________________________________________________________________________________________________________________________________________
+package org.selenium.pom;
+
+import org.openqa.selenium.WebDriver;
+import org.selenium.factory.DriverManager;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class BaseTest {
+	
+	//notice how i'm not defaulting to use public access modifier , remember this 
+	//expose only that is required ,hide everything else - this is encapsulation
+//	private WebDriver driver;
+	//notice how im not changing to public access modifier , just going one level up as 
+	//required , as much as we like freedom to do anything , we also need to set some ground rules to follow
+	//some restrictions.the driver shouldnot be accessible outside base class and sub classes.if we do so we r inviting
+	//a lot of troubles down the line
+	//with protected whichever classes are inheriting BaseTest class can only see driver[encapsulation - data hiding]
+	protected WebDriver driver;
+
+	@BeforeMethod
+	public void startDriver() {
+		driver = new DriverManager().initializeDriver();
+	}
+	
+	@AfterMethod
+	public void quitDriver() {
+		driver.quit();
+	}
+
+}
+________________________________________________________________________________________________________________________________
+package org.selenium.factory;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class DriverManager {
+
+	//initialize driver and return webdriver object
+	public WebDriver initializeDriver() {
+
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		return driver;
+	}
+}
+________________________________________________________________________________________________________________________________
+use BaseTest in actual testcase
+
+package org.selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.BaseTest;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase extends BaseTest{
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		
+		driver.get("https://askomdch.com");
+
+		
+		driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
+		driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
+		driver.findElement(By.cssSelector("button[value='Search']")).click();
+
+		// validate search functionality in the application using assert statements , if
+		// we dont assert if the search functionality is broken we dont know that
+		// whether it is working or not
+		Assert.assertEquals(
+				driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
+				"Search results: “Blue”");
+		driver.findElement(By.cssSelector("a[aria-label='Add “Blue Shoes” to your cart']")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector("a[title='View cart']")).click();
+
+		Assert.assertEquals(driver.findElement(By.cssSelector("td[class='product-name'] a")).getText(), "Blue Shoes");
+		driver.findElement(By.cssSelector(".checkout-button")).click();
+
+		driver.findElement(By.id("billing_first_name")).sendKeys("demo");
+		driver.findElement(By.id("billing_last_name")).sendKeys("user");
+		driver.findElement(By.id("billing_address_1")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_city")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_postcode")).sendKeys("94188");
+		driver.findElement(By.id("billing_email")).sendKeys("askomdch@gmail.com");
+		Thread.sleep(3000);
+		driver.findElement(By.id("place_order")).click();
+		Thread.sleep(3000);
+		Assert.assertEquals(driver.findElement(By.cssSelector(".woocommerce-notice")).getText(), "Thank you. Your order has been received.");
+
+		
+	}
+	
+}
+________________________________________________________________________________________________________________________________________________________________________
+Create Base Page - common to all pages
+move factory package inside pom package , and update references
+also create a package base inside pom package - org.selenium.pom.base , and move BaseTest class inside it
+
+Inside base package create a class BasePage
+
+package org.selenium.pom.base;
+
+import org.openqa.selenium.WebDriver;
+
+public class BasePage {
+
+	//private WebDriver driver;
+	protected WebDriver driver;
+	public BasePage(WebDriver driver) {
+		this.driver = driver;
+	}
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+Create Home Page
+inside pom package , create a new package - pages , and a class HomePage
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class HomePage extends BasePage{
+	
+	//not accessibe outside class
+	private final By storeMenuLink = By.cssSelector("#menu-item-1227 > a");
+
+	public HomePage(WebDriver driver) {
+		super(driver);
+		
+	}
+	
+	public void clickStoreMenuLink() {
+		driver.findElement(storeMenuLink).click();
+	}
+
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+Fluent Interface:
+Whenever we are naviagting to new page , return object of that page and pass the driver - do only if navigating to new page
+this results in tight coupling , some may not prefer this and create object in the testcases itself
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class HomePage extends BasePage{
+	
+	//not accessibe outside class
+	private final By storeMenuLink = By.cssSelector("#menu-item-1227 > a");
+
+	public HomePage(WebDriver driver) {
+		super(driver);
+		
+	}
+	
+	public StorePage clickStoreMenuLink() {
+		driver.findElement(storeMenuLink).click();
+		return new StorePage(driver);
+	}
+
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+Create Store Page:
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class StorePage extends BasePage{
+
+	public StorePage(WebDriver driver) {
+		super(driver);
+		
+	}
+	
+}
+
+
+inside the testcase create object of HomePage 
+
+@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storepage = homepage.clickStoreMenuLink();
+		driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
+		driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
+		driver.findElement(By.cssSelector("button[value='Search']")).click();
+
+		// validate search functionality in the application using assert statements , if
+		// we dont assert if the search functionality is broken we dont know that
+		// whether it is working or not
+		Assert.assertEquals(
+				driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
+				"Search results: “Blue”");
+		driver.findElement(By.cssSelector("a[aria-label='Add “Blue Shoes” to your cart']")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector("a[title='View cart']")).click();
+
+		Assert.assertEquals(driver.findElement(By.cssSelector("td[class='product-name'] a")).getText(), "Blue Shoes");
+		driver.findElement(By.cssSelector(".checkout-button")).click();
+
+		driver.findElement(By.id("billing_first_name")).sendKeys("demo");
+		driver.findElement(By.id("billing_last_name")).sendKeys("user");
+		driver.findElement(By.id("billing_address_1")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_city")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_postcode")).sendKeys("94188");
+		driver.findElement(By.id("billing_email")).sendKeys("askomdch@gmail.com");
+		Thread.sleep(3000);
+		driver.findElement(By.id("place_order")).click();
+		Thread.sleep(3000);
+		Assert.assertEquals(driver.findElement(By.cssSelector(".woocommerce-notice")).getText(), "Thank you. Your order has been received.");
+
+		
+	}
+
+if we r not using fluent interface , then we must be creating object of StorePage class 
+
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+		storePage.enterTextInSearchFld("Blue");
+		storePage.clickSearchBtn();
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn();
+		
+		
+		driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
+		driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
+		driver.findElement(By.cssSelector("button[value='Search']")).click();
+
+		// validate search functionality in the application using assert statements , if
+		// we dont assert if the search functionality is broken we dont know that
+		// whether it is working or not
+		Assert.assertEquals(
+				driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
+				"Search results: “Blue”");
+		driver.findElement(By.cssSelector("a[aria-label='Add “Blue Shoes” to your cart']")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector("a[title='View cart']")).click();
+
+		Assert.assertEquals(driver.findElement(By.cssSelector("td[class='product-name'] a")).getText(), "Blue Shoes");
+		driver.findElement(By.cssSelector(".checkout-button")).click();
+
+		driver.findElement(By.id("billing_first_name")).sendKeys("demo");
+		driver.findElement(By.id("billing_last_name")).sendKeys("user");
+		driver.findElement(By.id("billing_address_1")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_city")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_postcode")).sendKeys("94188");
+		driver.findElement(By.id("billing_email")).sendKeys("askomdch@gmail.com");
+		Thread.sleep(3000);
+		driver.findElement(By.id("place_order")).click();
+		Thread.sleep(3000);
+		Assert.assertEquals(driver.findElement(By.cssSelector(".woocommerce-notice")).getText(), "Thank you. Your order has been received.");
+
+		
+	}
+	
+________________________________________________________________________________________________________________________________________________________________________
+Builder Pattern:thus we are chaining methods , thus creating Builder Pattern
+
+we are using storePage object for these steps
+		storePage.enterTextInSearchFld("Blue");
+		storePage.clickSearchBtn();
+
+we can avoid this as we r still on same page
+we can modify the page object class of StorePage
+
+	public StorePage enterTextInSearchFld(String txt) {
+		driver.findElement(searchFld).sendKeys(txt);
+		return this;
+	}
+	
+	public StorePage clickSearchBtn() {
+		driver.findElement(searchBtn).click();
+		return this;
+	}
+
+now we can modify it in test method
+
+@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+		
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+	//**************  **************   **************     **************  **************
+		//thus we are chaining methods , thus creating Builder Pattern
+		storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+	//**************  **************   **************     **************  **************		
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn();
+		
+		
+		driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
+		driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
+		driver.findElement(By.cssSelector("button[value='Search']")).click();
+
+		// validate search functionality in the application using assert statements , if
+		// we dont assert if the search functionality is broken we dont know that
+		// whether it is working or not
+		Assert.assertEquals(
+				driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
+				"Search results: “Blue”");
+		driver.findElement(By.cssSelector("a[aria-label='Add “Blue Shoes” to your cart']")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector("a[title='View cart']")).click();
+
+		Assert.assertEquals(driver.findElement(By.cssSelector("td[class='product-name'] a")).getText(), "Blue Shoes");
+		driver.findElement(By.cssSelector(".checkout-button")).click();
+
+		driver.findElement(By.id("billing_first_name")).sendKeys("demo");
+		driver.findElement(By.id("billing_last_name")).sendKeys("user");
+		driver.findElement(By.id("billing_address_1")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_city")).sendKeys("San Francisco");
+		
+		driver.findElement(By.id("billing_postcode")).sendKeys("94188");
+		driver.findElement(By.id("billing_email")).sendKeys("askomdch@gmail.com");
+		Thread.sleep(3000);
+		driver.findElement(By.id("place_order")).click();
+		Thread.sleep(3000);
+		Assert.assertEquals(driver.findElement(By.cssSelector(".woocommerce-notice")).getText(), "Thank you. Your order has been received.");
+
+		
+	}
+	
+________________________________________________________________________________________________________________________________________________________________________
+Functional vs Structural Page Object:
+
+what we are using now is Structural page objec that is
+For every UI action we r creating a seperate method
+
+another good method instead of creating methods for each UI element , we can use functional page object
+that is we can create methods based on functionality
+
+as below instead of 2 methods we can create one
+
+public StorePage enterTextInSearchFld(String txt) {
+		driver.findElement(searchFld).sendKeys(txt);
+		return this;
+	}
+	
+	public StorePage clickSearchBtn() {
+		driver.findElement(searchBtn).click();
+		return this;
+	}
+	
+	public StorePage search(String txt) {
+		driver.findElement(searchFld).sendKeys(txt);
+		driver.findElement(searchBtn).click();
+		return this;
+	}
+_________________________________________________
+thus in test method we can use as belo
+//thus we are chaining methods , thus creating Builder Pattern
+		storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+		
+		//instead of above line we can use [methods that provide based on functionality]
+		storePage.search("Blue");
+__________________________________________________
+	//we can mark this private as we r using functional page object
+	private StorePage enterTextInSearchFld(String txt) {
+		driver.findElement(searchFld).sendKeys(txt);
+		return this;
+	}
+	//we can mark this private as we r using functional page object
+	private StorePage clickSearchBtn() {
+		driver.findElement(searchBtn).click();
+		return this;
+	}
+	
+	public StorePage search(String txt) {
+		driver.findElement(searchFld).sendKeys(txt);
+		driver.findElement(searchBtn).click();
+		
+		//we can also call methods as below
+//		enterTextInSearchFld(txt).clickSearchBtn();
+		return this;
+	}
+	
+________________________________________________________________________________________________________________________________________________________________________
+How to handle Dynamic UI Element
+
+in search we r searching for blue , what if we want to search some other word
+we can use dynamic UI element , by including the element in method;
+
+public void clickAddToCartBtn(String productName) {
+		 By addToCartBtn = By.cssSelector("a[aria-label='Add “"+ productName +"” to your cart']");
+		driver.findElement(addToCartBtn).click();
+	}
+
+what if the element is used by different methods
+
+//now this is flexible to use by any method inside the page class , mark it private 
+	private By getAddToCartElement(String productName) {
+		return  By.cssSelector("a[aria-label='Add “"+ productName +"” to your cart']");
+	}
+	
+	public void clickAddToCartBtn(String productName) {
+		 By addToCartBtn = getAddToCartElement(productName);
+		driver.findElement(addToCartBtn).click();
+	}
+
+________________________________________________________________________________________________________________________________________________________________________
+create cart page
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class CartPage extends BasePage {
+
+	private final By productName  = By.cssSelector("td[class='product-name'] a");
+	private final By checkoutBtn = By.cssSelector(".checkout-button");
+	
+	public CartPage(WebDriver driver) {
+		super(driver);
+	}
+	
+	public String getProductName() {
+		return driver.findElement(productName).getText();
+	}
+	
+	public CheckoutPage clickCheckoutBtn() {
+		driver.findElement(checkoutBtn).click();
+		return new CheckoutPage(driver);
+	}
+
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+create checkout page
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class CheckoutPage extends BasePage{
+
+	
+	private final By firstName = By.id("billing_first_name");
+	private final By lastname = By.id("billing_last_name");
+	private final By address = By.id("billing_address_1");
+	private final By city = By.id("billing_city");
+	private final By zipCode = By.id("billing_postcode");
+	private final By  emailId = By.id("billing_email");
+	private final By placeOrderBtn = By.id("place_order");
+	private final By successNotice = By.cssSelector(".woocommerce-notice");
+	
+	public CheckoutPage(WebDriver driver) {
+		super(driver);
+		
+	}
+	
+	public CheckoutPage setFirstName(String fname) {
+		driver.findElement(firstName).sendKeys(fname);
+		return this;
+	}
+	
+	public CheckoutPage setLastname(String lname) {
+		driver.findElement(lastname).sendKeys(lname);
+		return this;
+	}
+	
+	public CheckoutPage setAddress(String add) {
+		driver.findElement(address).sendKeys(add);
+		return this;
+	}
+	
+	public CheckoutPage setCity(String cityName) {
+		driver.findElement(city).sendKeys(cityName);
+		return this;
+	}
+
+	public CheckoutPage setZipCode(String zip) {
+		driver.findElement(zipCode).sendKeys(zip);
+		return this;
+	}
+	
+	public CheckoutPage setEmailId(String email) {
+		driver.findElement(emailId).sendKeys(email);
+		return this;
+	}
+	
+	public CheckoutPage setPlaceOrderBtn() {
+		driver.findElement(placeOrderBtn).click();
+		return this;
+	}
+	
+	public String getNotice() {
+		return driver.findElement(successNotice).getText();
+	}
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+Always use better methodNames
+our 1st test method is now more readable
+
+@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+
+		// thus we are chaining methods , thus creating Builder Pattern
+		// storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+
+		// instead of above line we can use [methods that provide based on
+		// functionality]
+		storePage.search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+
+		checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+		
+
+	}
+________________________________________________________________________________________________________________________________________________________________________
+finally our 2 test cases are changed as per the Pom model
+package org.selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.pages.CartPage;
+import org.selenium.pom.pages.CheckoutPage;
+import org.selenium.pom.pages.HomePage;
+import org.selenium.pom.pages.StorePage;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase extends BaseTest {
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+
+		// thus we are chaining methods , thus creating Builder Pattern
+		// storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+
+		// instead of above line we can use [methods that provide based on
+		// functionality]
+		storePage.search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+
+		checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+
+	@Test
+	public void loginAndCheckoutUsingDirectBankTransfer() throws InterruptedException {
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+		
+		storePage.search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+		
+		checkoutPage.clickHereToLoginLink();
+		Thread.sleep(5000);
+		
+		checkoutPage.login("demouser2804","demouser2804").setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(7000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+	
+		
+	}
+}
+________________________________________________________________________________________________________________________________________________________________________
+
+common method to load URL:
+
+in BasePage create a method
+public void load(String endPoint) {
+		driver.get("https://askomdch.com"+endPoint);
+	}
+
+in pages package
+HomePage , add this method
+
+public HomePage load() {
+		load("/");
+		return this;
+	}
+	
+in testcase , remove the driver.get("url") step and modify the object creation of HomePage as below
+
+
+HomePage homepage = new HomePage(driver).load();
+
+
+________________________________________________________________________________________________________________________________________________________________________
+

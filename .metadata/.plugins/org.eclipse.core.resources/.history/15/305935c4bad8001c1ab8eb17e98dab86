@@ -1,0 +1,87 @@
+package org.selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.pages.CartPage;
+import org.selenium.pom.pages.CheckoutPage;
+import org.selenium.pom.pages.HomePage;
+import org.selenium.pom.pages.StorePage;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase extends BaseTest {
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+
+		// thus we are chaining methods , thus creating Builder Pattern
+		// storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+
+		// instead of above line we can use [methods that provide based on
+		// functionality]
+		storePage.search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+
+		checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+		
+
+	}
+
+	@Test
+	public void loginAndCheckoutUsingDirectBankTransfer() throws InterruptedException {
+		driver.get("https://askomdch.com");
+
+		HomePage homepage = new HomePage(driver);
+		StorePage storePage = homepage.clickStoreMenuLink();
+		
+		storePage.search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+		checkoutPage.clickLoginBtn();
+		Thread.sleep(5000);
+		
+		checkoutPage.login("demouser2804","demouser2804").setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(7000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+		
+		
+
+		
+
+
+		
+
+		
+		
+	}
+}

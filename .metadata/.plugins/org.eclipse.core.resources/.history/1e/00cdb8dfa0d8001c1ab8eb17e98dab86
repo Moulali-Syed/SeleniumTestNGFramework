@@ -1,0 +1,23 @@
+package org.selenium.pom;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class BaseTest {
+	
+	//notice how i'm not defaulting to use public access modifier , remember this 
+	//expose only that is required ,hide everything else - this is encapsulation
+	private WebDriver driver;
+	
+	@BeforeMethod
+	public void startDriver() {
+		
+	}
+	
+	@AfterMethod
+	public void quitDriver() {
+		
+	}
+
+}

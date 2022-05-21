@@ -1,0 +1,36 @@
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+
+public class LoginPage extends BasePage {
+
+	private final By clickLoginBtn = By.cssSelector(".showlogin");
+	private final By userName = By.id("username");
+	private final By password = By.id("password");
+	private final By clickLogin = By.cssSelector("button[value='Login']");
+
+	public LoginPage(WebDriver driver) {
+		super(driver);
+
+	}
+
+	public void clickLoginBtn() {
+		driver.findElement(clickLoginBtn).click();
+
+	}
+
+	public void setUserName(String txt) {
+		driver.findElement(userName).sendKeys(txt);
+	}
+
+	public void setPassword(String txt) {
+		driver.findElement(password).sendKeys(txt);
+	}
+
+	public void confirmLogin() {
+		driver.findElement(clickLogin).click();
+	}
+
+}

@@ -9,3 +9,10 @@ org.openqa.selenium.NoSuchElementException: no such element: Unable to locate el
 =========================================================================================================================================================
 stale element exception - when the element is not present in DOM tree , we will get this error
 provide some wait it will resolve
+
+=========================================================================================================================================================
+element not interactable - check the page object method defined for the element , ensure correct element mapped with correct selector
+FAILED: loginAndCheckoutUsingDirectBankTransfer
+org.openqa.selenium.ElementNotInteractableException: element not interactable
+
+=========================================================================================================================================================
