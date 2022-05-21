@@ -706,9 +706,9 @@ public HomePage load() {
 	
 in testcase , remove the driver.get("url") step and modify the object creation of HomePage as below
 
-
-HomePage homepage = new HomePage(driver).load();
-
-
-________________________________________________________________________________________________________________________________________________________________________
+	StorePage storePage = new HomePage(driver)
+				.load()
+				.clickStoreMenuLink()
+				.search("Blue");
+_______________________________________________________________________________________________________________________________________________________________________
 

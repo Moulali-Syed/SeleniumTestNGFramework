@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="org.testng.annotations.Test"/>
-    <fullyQualifiedTypeName name="org.openqa.selenium.WebDriver"/>
     <fullyQualifiedTypeName name="org.openqa.selenium.chrome.ChromeDriver"/>
     <fullyQualifiedTypeName name="io.github.bonigarcia.wdm.WebDriverManager"/>
     <fullyQualifiedTypeName name="org.openqa.selenium.By"/>
     <fullyQualifiedTypeName name="org.testng.Assert"/>
+    <fullyQualifiedTypeName name="org.testng.annotations.BeforeMethod"/>
+    <fullyQualifiedTypeName name="org.testng.annotations.AfterMethod"/>
+    <fullyQualifiedTypeName name="org.selenium.factory.DriverManager"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.BaseTest"/>
+    <fullyQualifiedTypeName name="org.openqa.selenium.WebDriver"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.pages.HomePage"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.pages.StorePage"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.pages.CartPage"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.pages.CheckoutPage"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.base.BasePage"/>
 </qualifiedTypeNameHistroy>

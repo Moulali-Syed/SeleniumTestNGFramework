@@ -19,18 +19,15 @@ public class MyFirstTestCase extends BaseTest {
 	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
 //		System.setProperty("webdriver.chrome.driver", "pathHere");
 
-
-
-		HomePage homepage = new HomePage(driver).load();
-		StorePage storePage = homepage.clickStoreMenuLink();
-
+		StorePage storePage = new HomePage(driver)
+				.load()
+				.clickStoreMenuLink()
+				.search("Blue");
 		// thus we are chaining methods , thus creating Builder Pattern
 		// storePage.enterTextInSearchFld("Blue").clickSearchBtn();
 
 		// instead of above line we can use [methods that provide based on
 		// functionality]
-		storePage.search("Blue");
-
 		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
 		storePage.getTitle();
 		storePage.clickAddToCartBtn("Blue Shoes");
@@ -53,11 +50,10 @@ public class MyFirstTestCase extends BaseTest {
 	public void loginAndCheckoutUsingDirectBankTransfer() throws InterruptedException {
 		
 
-		HomePage homepage = new HomePage(driver).load();
-		StorePage storePage = homepage.clickStoreMenuLink();
-		
-		storePage.search("Blue");
-
+		StorePage storePage = new HomePage(driver)
+				.load()
+				.clickStoreMenuLink()
+				.search("Blue");
 		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
 		storePage.getTitle();
 		storePage.clickAddToCartBtn("Blue Shoes");
