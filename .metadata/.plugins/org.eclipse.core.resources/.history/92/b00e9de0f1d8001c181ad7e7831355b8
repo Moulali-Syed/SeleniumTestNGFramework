@@ -1,0 +1,16 @@
+package org.selenium.pom.utils;
+
+import org.selenium.pom.objects.BillingAddress;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public static class JacksonUtils {
+
+	//create a method that returns java object
+	public BillingAddress deserializeJson(String filePath,BillingAddress billingAddress) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.readValue(filePath, billingAddress.getClass());
+	}
+}

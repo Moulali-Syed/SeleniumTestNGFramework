@@ -1,0 +1,13 @@
+package org.selenium.pom.objects;
+
+public class BillingAddress {
+	
+	//step1: create private variables
+	private String firstName;
+	private String lastName;
+	private String addressLine;
+	private String city;
+	private String postalCode;
+	private String email;
+
+}

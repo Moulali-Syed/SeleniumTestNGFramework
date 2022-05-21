@@ -1,0 +1,714 @@
+Functional Page Objects:
+
+instead of this code in test method
+
+checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+
+we can use Pojo class
+If  there is any change in a field, or addition or removal of anyother field
+then we dont have to update testcase , then we can just update pageObject and dataObject
+
+For this we need to use POJO classes - Plain old java object
+_______________________________________________________________________________________________________________________________________________
+Create POJO for Billing Address :
+inside pom package - create a new package objects - create a class BillingAddress
+
+package org.selenium.pom.objects;
+
+public class BillingAddress {
+	
+	//create POJO class
+	//step1: create private variables
+	private String firstName;
+	private String lastName;
+	private String addressLine;
+	private String city;
+	private String postalCode;
+	private String email;
+	
+	
+	//step 2 : generate getters and setters
+	//right click -> source -> generate getters and setters
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getAddressLine() {
+		return addressLine;
+	}
+	public void setAddressLine(String addressLine) {
+		this.addressLine = addressLine;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+}
+_______________________________________________________________________________________________________________________________________________
+BillingAddress POJO class - set and use in Test
+
+step1:
+	//create object of BillingAddress POJO class
+		BillingAddress billingAddress = new BillingAddress();
+		billingAddress.setFirstName("demo");
+		billingAddress.setLastName("user");
+		billingAddress.setAddressLine("San Fransico");
+		billingAddress.setCity("San Fransico");
+		billingAddress.setPostalCode("94188");
+		billingAddress.setEmail("askomdch@gamil.com");
+
+step2: goto CheckoutPage  , and create a functional method
+	
+	public CheckoutPage setBillingAddress(BillingAddress billingAddress) {
+		return setFirstName(billingAddress.getFirstName()).setLastname(billingAddress.getLastName())
+				.setAddress(billingAddress.getAddressLine()).setCity(billingAddress.getCity())
+				.setZipCode(billingAddress.getPostalCode()).setEmailId(billingAddress.getEmail());
+	}
+
+step3: in test method we can use below code replacing commented code
+
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
+
+//		checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+//				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+
+_______________________________________________________________________________________________________________________________________________
+BillingAddress - Builder Pattern
+
+look at below code we r using the object multiple times , to overcome lets go to BillingAddress POJO class and make changes
+		billingAddress.setFirstName("demo");
+		billingAddress.setLastName("user");
+		billingAddress.setAddressLine("San Fransico");
+		billingAddress.setCity("San Fransico");
+		billingAddress.setPostalCode("94188");
+		billingAddress.setEmail("askomdch@gamil.com");
+
+change POJO class as below
+package org.selenium.pom.objects;
+
+public class BillingAddress {
+	
+	//create POJO class
+	//step1: create private variables
+	private String firstName;
+	private String lastName;
+	private String addressLine;
+	private String city;
+	private String postalCode;
+	private String email;
+	
+	
+	//step 2 : generate getters and setters
+	//right click -> source -> generate getters and setters
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public BillingAddress setFirstName(String firstName) {
+		this.firstName = firstName;
+		return this;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public BillingAddress setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+	public String getAddressLine() {
+		return addressLine;
+	}
+	public BillingAddress setAddressLine(String addressLine) {
+		this.addressLine = addressLine;
+		return this;
+	}
+	public String getCity() {
+		return city;
+	}
+	public BillingAddress setCity(String city) {
+		this.city = city;
+		return this;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public BillingAddress setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+		return this;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public BillingAddress setEmail(String email) {
+		this.email = email;
+		return this;
+	}
+	
+}
+
+now go to testcase and modify it as below
+
+BillingAddress billingAddress = new BillingAddress()
+		.setFirstName("demo")
+		.setLastName("user")
+		.setAddressLine("San Fransico")
+		.setCity("San Fransico")
+		.setPostalCode("94188")
+		.setEmail("askomdch@gamil.com");
+_______________________________________________________________________________________________________________________________________________
+BillingAddress - Parameterized Constructor
+
+BillingAddress billingAddress = new BillingAddress()
+		.setFirstName("demo")
+		.setLastName("user")
+		.setAddressLine("San Fransico")
+		.setCity("San Fransico")
+		.setPostalCode("94188")
+		.setEmail("askomdch@gamil.com");
+
+we may donot want to send data as below , instead want to send to fiels as paramters to constructor of BillingAddress
+
+goto BillingAddress Class and create a parameterized constructor
+
+//parameterized constructor
+	public BillingAddress(String firstName,String lastName,String addressLine,String city,String postalCode,String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.addressLine = addressLine;
+		this.city = city;
+		this.postalCode = postalCode;
+		this.email = email;
+				
+	}
+	
+In testcase modify as below
+BillingAddress billingAddress = new BillingAddress("demo","user","San Fransico","San Fransico","94188","askomdch@gamil.com");
+
+Also create non parameterized constructor , to use set methods based on flexibility , as it is more readable
+
+_______________________________________________________________________________________________________________________________________________
+Billing Address - Create JSON Object
+
+we may want to read data from some file, instead of hard coding
+BillingAddress billingAddress = new BillingAddress("demo","user","San Fransico","San Fransico","94188","askomdch@gamil.com");
+
+if there is any change , we may have to update code in data , which is not desired
+we can create a JSON/XML file
+
+lets use JSON file, with help of JackSon API
+create a resources folder src/test - src/test/resources
+create a myBillingAddress.json file
+
+{
+	"firstName": "demo",
+	"lastName": "user",
+	"addressLine": "San Fransico",
+	"city": "San Fransico",
+	"postalCode": "94188",
+	"email": "askomdch@gamil.com"
+}
+
+
+the field names in BillingAddress.java file must be same as the names in json file
+_______________________________________________________________________________________________________________________________________________
+Add Jackson dependency
+go to maven central repository
+
+search jackson api
+select jackson databind
+
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.13.3</version>
+</dependency>
+
+and paste in pom.xml file
+
+_______________________________________________________________________________________________________________________________________________
+Deserialize JSON:
+lets create a utility method to deserialize json
+inside pom package --> create a package utils --> create a class JacksonUtils
+
+package org.selenium.pom.utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.selenium.pom.objects.BillingAddress;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public  class JacksonUtils {
+
+	//create a method that returns java object
+	public static BillingAddress deserializeJson(InputStream  filePath,BillingAddress billingAddress) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.readValue(filePath, billingAddress.getClass());
+	}
+}
+
+
+
+now in testcase
+	//using jacksonUtils
+		BillingAddress billingAddress = new BillingAddress();
+		InputStream is = getClass().getClassLoader().getResourceAsStream("myBillingAddress.json");
+		JacksonUtils.deserializeJson(is, billingAddress);
+
+
+package org.selenium;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.objects.BillingAddress;
+import org.selenium.pom.pages.CartPage;
+import org.selenium.pom.pages.CheckoutPage;
+import org.selenium.pom.pages.HomePage;
+import org.selenium.pom.pages.StorePage;
+import org.selenium.pom.utils.JacksonUtils;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase extends BaseTest {
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+//		System.setProperty("webdriver.chrome.driver", "pathHere");
+
+		//create object of BillingAddress POJO class
+	/*	BillingAddress billingAddress = new BillingAddress()
+		.setFirstName("demo")
+		.setLastName("user")
+		.setAddressLine("San Fransico")
+		.setCity("San Fransico")
+		.setPostalCode("94188")
+		.setEmail("askomdch@gamil.com");
+	*/
+		//BillingAddress billingAddress = new BillingAddress("demo","user","San Fransico","San Fransico","94188","askomdch@gamil.com");
+		
+		//using jacksonUtils
+		BillingAddress billingAddress = new BillingAddress();
+		InputStream is = getClass().getClassLoader().getResourceAsStream("myBillingAddress.json");
+		billingAddress = JacksonUtils.deserializeJson(is, billingAddress);
+		
+		StorePage storePage = new HomePage(driver)
+				.load()
+				.clickStoreMenuLink()
+				.search("Blue");
+		// thus we are chaining methods , thus creating Builder Pattern
+		// storePage.enterTextInSearchFld("Blue").clickSearchBtn();
+
+		// instead of above line we can use [methods that provide based on
+		// functionality]
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
+
+//		checkoutPage.setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+//				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+
+	@Test
+	public void loginAndCheckoutUsingDirectBankTransfer() throws InterruptedException {
+		
+
+		StorePage storePage = new HomePage(driver)
+				.load()
+				.clickStoreMenuLink()
+				.search("Blue");
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+		
+		checkoutPage.clickHereToLoginLink();
+		Thread.sleep(5000);
+		
+		checkoutPage.login("demouser2804","demouser2804").setFirstName("demo").setLastname("user").setAddress("San Fransico").setCity("San Fransico")
+				.setZipCode("94188").setEmailId("askomdch@gamil.com").setPlaceOrderBtn();
+		Thread.sleep(7000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+	
+		
+	}
+}
+
+
+package org.selenium.pom.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.selenium.pom.base.BasePage;
+import org.selenium.pom.objects.BillingAddress;
+
+public class CheckoutPage extends BasePage {
+
+	private final By firstName = By.id("billing_first_name");
+	private final By lastname = By.id("billing_last_name");
+	private final By address = By.id("billing_address_1");
+	private final By city = By.id("billing_city");
+	private final By zipCode = By.id("billing_postcode");
+	private final By emailId = By.id("billing_email");
+	private final By placeOrderBtn = By.id("place_order");
+	private final By successNotice = By.cssSelector(".woocommerce-notice");
+
+	private final By clickLoginBtn = By.xpath("//a[@class='showlogin']");
+	private final By userName = By.id("username");
+	private final By password = By.id("password");
+	private final By loginBtn = By.name("login");
+
+	public CheckoutPage(WebDriver driver) {
+		super(driver);
+
+	}
+
+	public CheckoutPage setFirstName(String fname) {
+		driver.findElement(firstName).clear();
+		driver.findElement(firstName).sendKeys(fname);
+		return this;
+	}
+
+	public CheckoutPage setLastname(String lname) {
+		driver.findElement(lastname).clear();
+		driver.findElement(lastname).sendKeys(lname);
+		return this;
+	}
+
+	public CheckoutPage setAddress(String add) {
+		driver.findElement(address).clear();
+		driver.findElement(address).sendKeys(add);
+		return this;
+	}
+
+	public CheckoutPage setCity(String cityName) {
+		driver.findElement(city).clear();
+		driver.findElement(city).sendKeys(cityName);
+		return this;
+	}
+
+	public CheckoutPage setZipCode(String zip) {
+		driver.findElement(zipCode).clear();
+		driver.findElement(zipCode).sendKeys(zip);
+		return this;
+	}
+
+	public CheckoutPage setEmailId(String email) {
+		driver.findElement(emailId).clear();
+		driver.findElement(emailId).sendKeys(email);
+		return this;
+	}
+
+	public CheckoutPage setBillingAddress(BillingAddress billingAddress) {
+		return setFirstName(billingAddress.getFirstName()).setLastname(billingAddress.getLastName())
+				.setAddress(billingAddress.getAddressLine()).setCity(billingAddress.getCity())
+				.setZipCode(billingAddress.getPostalCode()).setEmailId(billingAddress.getEmail()).setPlaceOrderBtn();
+	}
+
+	public CheckoutPage setPlaceOrderBtn() {
+		driver.findElement(placeOrderBtn).click();
+		return this;
+	}
+
+	public String getNotice() {
+		return driver.findElement(successNotice).getText();
+	}
+
+	public CheckoutPage clickHereToLoginLink() {
+		driver.findElement(clickLoginBtn).click();
+		return this;
+
+	}
+
+	public CheckoutPage enterUserName(String uname) {
+		driver.findElement(userName).sendKeys(uname);
+		return this;
+	}
+
+	public CheckoutPage enterPassword(String pwd) {
+		driver.findElement(password).sendKeys(pwd);
+		return this;
+	}
+
+	public CheckoutPage clickLoginBtn() {
+		driver.findElement(loginBtn).click();
+		return this;
+	}
+
+	public CheckoutPage login(String uName, String pawd) {
+		return enterUserName(uName).enterPassword(pawd).clickLoginBtn();
+	}
+
+}
+
+_______________________________________________________________________________________________________________________________________________
+
+Reusable method to De Serialize JSON:
+
+package org.selenium.pom.utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.selenium.pom.objects.BillingAddress;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public  class JacksonUtils {
+
+	//create a method that returns java object
+	public static <T>T deserializeJson(String  fileName,Class<T> T) throws IOException {
+		
+		InputStream is = JacksonUtils.class.getClassLoader().getResourceAsStream(fileName);
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.readValue(is, T);
+	}
+}
+
+in test case use below line
+BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+
+test method
+@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+
+		// using jacksonUtils
+		BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+
+		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn("Blue Shoes");
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
+
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+_______________________________________________________________________________________________________________________________________________
+now in our testcase product is hardcoded lets create json array
+
+Products - Create JSON Array
+
+create products.json inside - resources package
+
+[
+	{
+		"id": 1215,
+		"name": "Blue Shoes"
+	}
+	
+]
+
+_______________________________________________________________________________________________________________________________________________
+Products - Create POJO
+inside objects - package , create a class Product
+
+package org.selenium.pom.objects;
+
+import java.io.IOException;
+
+import org.selenium.pom.utils.JacksonUtils;
+
+public class Product {
+
+	private int id;
+	private String name;
+	
+	//while dealing with JSON its always better to create constructor
+	public Product() {
+		
+	}
+	public Product(int id) throws IOException {
+		
+		Product[] products = JacksonUtils.deserializeJson("products.json", Product[].class);
+		for(Product product:products) {
+			if(product.getId()==id) {
+				this.id = id;
+				this.name = product.getName();
+			}
+		}
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+}
+
+_______________________________________________________________________________________________________________________________________________
+Products - Fetch and Execute Test
+
+@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+
+		// using jacksonUtils
+		BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+		******  ******  ******   ******
+		Product product = new Product(1215);
+		******  ******  ******  ******
+		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search("Blue");
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+		storePage.getTitle();
+		****** ****** ****** ******
+		storePage.clickAddToCartBtn(product.getName());
+		****** ****** ****** ******
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		****** ****** ****** ******
+		Assert.assertEquals(cartPage.getProductName(), product.getName());
+		****** ****** ****** ******
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
+
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+
+_______________________________________________________________________________________________________________________________________________
+Testcase2:
+
+create a class - User , in package objects
+
+
+package org.selenium;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.objects.BillingAddress;
+import org.selenium.pom.objects.Product;
+import org.selenium.pom.objects.User;
+import org.selenium.pom.pages.CartPage;
+import org.selenium.pom.pages.CheckoutPage;
+import org.selenium.pom.pages.HomePage;
+import org.selenium.pom.pages.StorePage;
+import org.selenium.pom.utils.JacksonUtils;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MyFirstTestCase extends BaseTest {
+
+	@Test
+	public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+
+		String searchFor = "Blue";
+		// using jacksonUtils
+		BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+		Product product = new Product(1215);
+		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search(searchFor);
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “"+searchFor+"”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn(product.getName());
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), product.getName());
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
+
+		Thread.sleep(5000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+
+	@Test
+	public void loginAndCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+
+		String searchFor = "Blue";
+		BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+		Product product = new Product(1215);
+		User user = new User("demouser2804", "demouser2804");
+
+		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search(searchFor);
+
+		Assert.assertEquals(storePage.getTitle(), "Search results: “"+searchFor+"”");
+		storePage.getTitle();
+		storePage.clickAddToCartBtn(product.getName());
+		Thread.sleep(3000);
+		CartPage cartPage = storePage.clickViewCart();
+
+		Assert.assertEquals(cartPage.getProductName(), product.getName());
+		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+		checkoutPage.clickHereToLoginLink();
+		Thread.sleep(5000);
+
+		//checkoutPage.login(null, null)
+		checkoutPage.login(user.getUsername(),user.getPassword()).setBillingAddress(billingAddress);
+		Thread.sleep(7000);
+		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
+
+	}
+}
+
+

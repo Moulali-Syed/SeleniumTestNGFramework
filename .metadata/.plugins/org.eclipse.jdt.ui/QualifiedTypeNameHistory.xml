@@ -15,4 +15,9 @@
     <fullyQualifiedTypeName name="org.selenium.pom.pages.CartPage"/>
     <fullyQualifiedTypeName name="org.selenium.pom.pages.CheckoutPage"/>
     <fullyQualifiedTypeName name="org.selenium.pom.base.BasePage"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.objects.BillingAddress"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <fullyQualifiedTypeName name="java.io.InputStream"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.utils.JacksonUtils"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.objects.Product"/>
 </qualifiedTypeNameHistroy>

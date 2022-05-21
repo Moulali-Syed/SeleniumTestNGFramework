@@ -13,3 +13,13 @@ a
 1src/test/java/org/selenium/pom/base/BasePage.java,4\2\42bc0116e2f5b9b4b3dd41f59599723160dc7817
 b
 2src/test/java/org/selenium/pom/pages/HomePage.java,d\7\d7ed06dab9390d5f5664db876b915926b0a86640
+j
+:src/test/java/org/selenium/pom/objects/BillingAddress.java,4\2\42b4b29dce6f5acba8bcf12a222439a5b93cac6c
+X
+(src/test/resources/myBillingAddress.json,5\8\5887b25b5396c451963346658c2f9d2f7135a63e
+f
+6src/test/java/org/selenium/pom/utils/JacksonUtils.java,3\4\34f6495b061e09c6f91cea105d66cb23450eea33
+P
+ src/test/resources/products.json,9\3\939fb9f01bf33231d69c9e4ea8a54497314190c0
+c
+3src/test/java/org/selenium/pom/objects/Product.java,b\a\ba5ad65d4025d849d6846bf8ce9b1126e0edf03a
