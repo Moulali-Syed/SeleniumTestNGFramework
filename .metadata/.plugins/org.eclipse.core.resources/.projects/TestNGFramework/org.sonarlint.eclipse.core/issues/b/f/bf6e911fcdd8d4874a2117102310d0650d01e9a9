@@ -1,16 +1,16 @@
 
 W
-java:S2925#"$Remove this use of "Thread.sleep()".(öÍËè8ÄˆĞ¥0HœRMAJORZ
+java:S2925="$Remove this use of "Thread.sleep()".(öÍËè8á€¦0H˜RMAJORZ
 CODE_SMELL
 W
-java:S2925<"$Remove this use of "Thread.sleep()".(¬Æ„°8÷µ“’0HŸRMAJORZ
+java:S2925C"$Remove this use of "Thread.sleep()".(¬Æ„°8ü¡ˆ’0H¢RMAJORZ
 CODE_SMELL
 W
-java:S2925)"$Remove this use of "Thread.sleep()".(¬Æ„°8ïáö‘0HRMAJORZ
+java:S2925%"$Remove this use of "Thread.sleep()".(öÍËè8÷µ“’0H£RMAJORZ
 CODE_SMELL
 W
-java:S29255"$Remove this use of "Thread.sleep()".(öÍËè8ü¡ˆ’0HRMAJORZ
+java:S2925G"$Remove this use of "Thread.sleep()".(Í“¢œ8ÄˆĞ¥0H—RMAJORZ
 CODE_SMELL
 W
-java:S2925A"$Remove this use of "Thread.sleep()".(Í“¢œ8á€¦0H›RMAJORZ
+java:S2925+"$Remove this use of "Thread.sleep()".(¬Æ„°8ïáö‘0H™RMAJORZ
 CODE_SMELL

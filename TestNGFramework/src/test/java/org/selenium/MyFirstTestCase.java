@@ -34,13 +34,13 @@ public class MyFirstTestCase extends BaseTest {
 		Assert.assertEquals(storePage.getTitle(), "Search results: “"+searchFor+"”");
 		storePage.getTitle();
 		storePage.clickAddToCartBtn(product.getName());
-		Thread.sleep(3000);
+		
 		CartPage cartPage = storePage.clickViewCart();
 
 		Assert.assertEquals(cartPage.getProductName(), product.getName());
 		CheckoutPage checkoutPage = cartPage.clickCheckoutBtn().setBillingAddress(billingAddress);
 
-		Thread.sleep(5000);
+		
 		Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
 
 	}

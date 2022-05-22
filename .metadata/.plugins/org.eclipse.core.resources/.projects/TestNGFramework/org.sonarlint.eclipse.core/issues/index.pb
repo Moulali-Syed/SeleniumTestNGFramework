@@ -23,3 +23,5 @@ P
  src/test/resources/products.json,9\3\939fb9f01bf33231d69c9e4ea8a54497314190c0
 c
 3src/test/java/org/selenium/pom/objects/Product.java,b\a\ba5ad65d4025d849d6846bf8ce9b1126e0edf03a
+`
+0src/test/java/org/selenium/pom/objects/User.java,e\9\e9e8e39ae39b8e897562f00e7f0c7e4fd67fed8d

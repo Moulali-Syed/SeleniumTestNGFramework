@@ -20,4 +20,5 @@
     <fullyQualifiedTypeName name="java.io.InputStream"/>
     <fullyQualifiedTypeName name="org.selenium.pom.utils.JacksonUtils"/>
     <fullyQualifiedTypeName name="org.selenium.pom.objects.Product"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.objects.User"/>
 </qualifiedTypeNameHistroy>
