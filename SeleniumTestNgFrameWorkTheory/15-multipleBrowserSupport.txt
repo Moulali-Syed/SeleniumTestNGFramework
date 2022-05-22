@@ -1,0 +1,121 @@
+Install firefox browser
+
+we need geckodriver
+
+
+using maven command line to pass browser name
+
+step1: chnage DriverManager class as below
+package org.selenium.pom.factory;
+
+package org.selenium.pom.factory;
+
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class DriverManager {
+
+	//initialize driver and return webdriver object
+	public WebDriver initializeDriver() {
+		WebDriver driver;
+		String browser = System.getProperty("browser");
+		switch(browser.toLowerCase()) {
+		case "chrome":
+			WebDriverManager.chromedriver().cachePath("Drivers").setup();
+			 driver = new ChromeDriver();
+			break;
+		case "firefox":
+			WebDriverManager.firefoxdriver().cachePath("Drivers").setup();
+			driver = new FirefoxDriver();
+			break;
+		default:
+			throw new IllegalStateException("Invalid browser name: "+browser);
+			
+		}
+
+
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		return driver;
+	}
+}
+
+
+to run using maven
+mvn clean test -Dbrowser=Chrome
+
+-D is to accept a property
+browser - we can say it as System property
+
+======================================================================
+use enum for browser name
+
+create a package - name it constants - create a class DriverType
+
+package org.selenium.pom.constants;
+
+public enum DriverType {
+
+	CHROME,
+	FIREFOX
+}
+
+
+now go back to switch statements
+
+package org.selenium.pom.factory;
+
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.selenium.pom.constants.DriverType;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class DriverManager {
+
+	//initialize driver and return webdriver object
+	public WebDriver initializeDriver() {
+		WebDriver driver;
+		String browser = System.getProperty("browser");
+		switch(DriverType.valueOf(browser)) {
+		case CHROME:
+			WebDriverManager.chromedriver().cachePath("Drivers").setup();
+			 driver = new ChromeDriver();
+			break;
+		case FIREFOX:
+			WebDriverManager.firefoxdriver().cachePath("Drivers").setup();
+			driver = new FirefoxDriver();
+			break;
+		default:
+			throw new IllegalStateException("Invalid browser name: "+browser);
+			
+		}
+
+
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		return driver;
+	}
+}
+
+======================================================================
+now our testcase will run thru maven command but from IDE we r not setting any value 
+String browser = System.getProperty("browser");
+to this , we can resolve it in 2 ways
+
+1.passing browser name
+	String browser = System.getProperty("browser","CHROME");
+
+
+2.use JVM arguments
+
+
+
