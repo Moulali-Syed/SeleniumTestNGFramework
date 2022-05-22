@@ -1,0 +1,119 @@
+downlaod maven - from apache .org
+downlaod binary zip archive - apache-maven-version-bin.zip
+unzip to some folder
+
+we have bin folder --> go inside it and copy bin folder path
+
+go to edit system env variables 
+in system variables - path - paste the bin folder path - ok 
+
+
+now go to command prompt and write mvn
+
+============================================================
+Execute automation using maven command line
+
+In project - inside pom package create  a package - tests and move the testcase into it [in our case MyFirstTestCase]
+
+now execute testcase using terminal --> using the command line
+goto commandprompt --> project folder path --> 
+like
+
+cd C:\Testing\Frameworks\SeleniumTestNGFramework\TestNGFramework
+
+run maven goal
+mvn test
+
+mvn clean test - clean and run testcase
+=============================================================================
+we must add this above dependencies tag and also our testcase Class name must end with Test
+
+
+<properties>
+		<maven.compiler.source>16</maven.compiler.source>
+		<maven.compiler.target>16</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+surefire plugin
+<build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M6</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+2. class Name must end with Test
+
+
+when we get this below error , chnage the version of JRE
+java.lang.UnsupportedClassVersionError: org/selenium/pom/base/BaseTest has been compiled by a more recent version of the Java Runtime (class file version 59.0), 
+this version of the Java Runtime only recognizes class file versions up to 55.0
+
+use JavaSE-11 , if u r using JavaSE-15 or JavaSE-17
+
+
+how maven recognizes test classes:
+It will check name of Class , that is className must end with Test
+
+
+our pom.xml looks as below
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>SeleniumTestNgFramework</groupId>
+	<artifactId>TestNGFramework</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M6</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+
+
+	</dependencies>
+</project>
+
+
+

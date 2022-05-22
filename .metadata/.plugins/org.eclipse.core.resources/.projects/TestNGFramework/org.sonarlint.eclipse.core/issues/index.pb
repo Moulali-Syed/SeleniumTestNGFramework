@@ -25,3 +25,7 @@ c
 3src/test/java/org/selenium/pom/objects/Product.java,b\a\ba5ad65d4025d849d6846bf8ce9b1126e0edf03a
 `
 0src/test/java/org/selenium/pom/objects/User.java,e\9\e9e8e39ae39b8e897562f00e7f0c7e4fd67fed8d
+a
+1src/test/java/org/selenium/pom/base/BaseTest.java,4\5\453d6ad416ecded16c0b63bb31fc6eced0d871b8
+i
+9src/test/java/org/selenium/pom/factory/DriverManager.java,5\4\54e75f3a2a32da4a50f3d8f51d90d21de446b79e
