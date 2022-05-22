@@ -1,0 +1,41 @@
+Instead of downloading the chrome driver based on chrome version
+
+there is a utility that detects and uses the compatiable version of driver
+
+WebDriverManager - can be used
+
+
+setup and integration:
+<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+<dependency>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>webdrivermanager</artifactId>
+    <version>5.1.1</version>
+</dependency>
+
+
+paste in pom.xml file
+
+and add this line to DriverManager class
+
+WebDriverManager.chromedriver().setup();
+
+
+		
+public class DriverManager {
+
+	//initialize driver and return webdriver object
+	public WebDriver initializeDriver() {
+
+		WebDriverManager.chromedriver().setup();
+		
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		return driver;
+	}
+}
+
+
+WebDriverManager.chromedriver().cachePath("Drivers").setup();
+this will download the chromedriver in Drivers folder , created at project level
