@@ -1,0 +1,10 @@
+{
+	"firstName": "demo",
+	"lastName": "user",
+	"country":"India",
+	"addressLine": "Pune",
+	"city": "Pune",
+	"state":"Maharastra",
+	"postalCode": "411001",
+	"email": "askomdch@gamil.com"
+}

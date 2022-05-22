@@ -1,0 +1,46 @@
+remove the dependency on default country and state selection , in checkout page class
+
+private final By countryDropDown = By.id("billing_country");
+	private final By stateDropDown =  By.id("billing_state");
+
+public CheckoutPage selectCountry(String countryName) {
+		Select select = new Select(driver.findElement(countryDropDown));
+		select.selectByVisibleText(countryName);
+		return this;
+	}
+	
+	public CheckoutPage selectState(String stateName) {
+		Select select = new Select(driver.findElement(countryDropDown));
+		select.selectByVisibleText(stateName);
+		return this;
+	}
+
+
+
+public CheckoutPage setBillingAddress(BillingAddress billingAddress) {
+		return setFirstName(billingAddress.getFirstName()).setLastname(billingAddress.getLastName())
+
+				.selectCountry(billingAddress.getCountry()).setAddress(billingAddress.getAddressLine())
+				.setCity(billingAddress.getCity()).selectState(billingAddress.getState())
+				.setZipCode(billingAddress.getPostalCode()).setEmailId(billingAddress.getEmail()).setPlaceOrderBtn();
+	}
+
+
+and also in BillingAddress:
+private String country;
+	private String state;
+	
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+
+and also in myBillingAddress.json

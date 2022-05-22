@@ -1,8 +1,10 @@
 {
 	"firstName": "demo",
 	"lastName": "user",
-	"addressLine": "San Fransico",
-	"city": "San Fransico",
-	"postalCode": "94188",
+	"country":"India",
+	"addressLine": "Pune",
+	"city": "Pune",
+	"state":"Maharashtra",
+	"postalCode": "411001",
 	"email": "askomdch@gamil.com"
 }

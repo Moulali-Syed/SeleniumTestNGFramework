@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.objects.BillingAddress;
@@ -29,17 +30,32 @@ public class CheckoutPage extends BasePage {
 	private final By loginBtn = By.name("login");
 	private final By overlay = By.cssSelector(".blockUI.blockOverlay");
 
+	private final By countryDropDown = By.id("billing_country");
+	private final By stateDropDown = By.id("billing_state");
+
 	public CheckoutPage(WebDriver driver) {
 		super(driver);
 
 	}
 
 	public CheckoutPage setFirstName(String fname) {
-		WebElement e =  wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+		WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
 		e.clear();
 		e.sendKeys(fname);
 //		driver.findElement(firstName).clear();
 //		driver.findElement(firstName).sendKeys(fname);
+		return this;
+	}
+
+	public CheckoutPage selectCountry(String countryName) {
+		Select select = new Select(driver.findElement(countryDropDown));
+		select.selectByVisibleText(countryName);
+		return this;
+	}
+
+	public CheckoutPage selectState(String stateName) {
+		Select select = new Select(driver.findElement(stateDropDown));
+		select.selectByVisibleText(stateName);
 		return this;
 	}
 
@@ -75,7 +91,9 @@ public class CheckoutPage extends BasePage {
 
 	public CheckoutPage setBillingAddress(BillingAddress billingAddress) {
 		return setFirstName(billingAddress.getFirstName()).setLastname(billingAddress.getLastName())
-				.setAddress(billingAddress.getAddressLine()).setCity(billingAddress.getCity())
+
+				.selectCountry(billingAddress.getCountry()).setAddress(billingAddress.getAddressLine())
+				.setCity(billingAddress.getCity()).selectState(billingAddress.getState())
 				.setZipCode(billingAddress.getPostalCode()).setEmailId(billingAddress.getEmail()).setPlaceOrderBtn();
 	}
 
@@ -91,33 +109,33 @@ public class CheckoutPage extends BasePage {
 
 	public CheckoutPage clickHereToLoginLink() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(clickLoginBtn)).click();
-		
+
 		return this;
 
 	}
 
 	public CheckoutPage enterUserName(String uname) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(userName)).sendKeys(uname);
-		
+
 		return this;
 	}
 
 	public CheckoutPage enterPassword(String pwd) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(password)).sendKeys(pwd);
-		
+
 		return this;
 	}
 
 	public CheckoutPage clickLoginBtn() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(loginBtn)).click();
-	
+
 		return this;
 	}
 
 	public CheckoutPage login(String uName, String pawd) {
 		return enterUserName(uName).enterPassword(pawd).clickLoginBtn();
 	}
-	
+
 	public CheckoutPage login1(User user) {
 		return enterUserName(user.getUsername()).enterPassword(user.getPassword()).clickLoginBtn();
 	}
