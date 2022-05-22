@@ -29,3 +29,12 @@ a
 1src/test/java/org/selenium/pom/base/BaseTest.java,4\5\453d6ad416ecded16c0b63bb31fc6eced0d871b8
 i
 9src/test/java/org/selenium/pom/factory/DriverManager.java,5\4\54e75f3a2a32da4a50f3d8f51d90d21de446b79e
+i
+9src/test/java/org/selenium/pom/tests/MyFirstTestCase.java,8\f\8f22b052958d54433fd3879a9b301a6546566dc8
+m
+=src/test/java/org/selenium/pom/tests/MyFirstTestCaseTest.java,6\0\60f3eb2b8a2a17859def9196100f8da53223df62
+h
+8src/test/java/org/selenium/pom/constants/DriverType.java,1\a\1a008ccabb7f3a50102edb0ba935fa627dcd130a
+:
+
+testng.xml,5\2\522a7a4e21649af06297e31a9e33f13bb4fd3022

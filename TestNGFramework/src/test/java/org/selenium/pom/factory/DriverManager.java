@@ -12,9 +12,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class DriverManager {
 
 	//initialize driver and return webdriver object
-	public WebDriver initializeDriver() {
+	public WebDriver initializeDriver(String browser) {
 		WebDriver driver;
-		String browser = System.getProperty("browser");
+		
+		browser = System.getProperty("browser",browser);
 		switch(DriverType.valueOf(browser)) {
 		case CHROME:
 			WebDriverManager.chromedriver().cachePath("Drivers").setup();

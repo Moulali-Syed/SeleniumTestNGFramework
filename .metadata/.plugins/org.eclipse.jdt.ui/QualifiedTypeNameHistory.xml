@@ -30,4 +30,7 @@
     <fullyQualifiedTypeName name="org.openqa.selenium.WebElement"/>
     <fullyQualifiedTypeName name="org.openqa.selenium.support.How"/>
     <fullyQualifiedTypeName name="org.openqa.selenium.support.PageFactory"/>
+    <fullyQualifiedTypeName name="org.openqa.selenium.firefox.FirefoxDriver"/>
+    <fullyQualifiedTypeName name="org.selenium.pom.constants.DriverType"/>
+    <fullyQualifiedTypeName name="org.testng.annotations.Parameters"/>
 </qualifiedTypeNameHistroy>
