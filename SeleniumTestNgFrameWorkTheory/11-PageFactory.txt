@@ -1,0 +1,38 @@
+public class CartPage extends BasePage {
+
+	//private final By productName = By.cssSelector("td[class='product-name'] a");
+	//private final By checkoutBtn = By.cssSelector(".checkout-button");
+
+	@FindBy(css = "td[class='product-name'] a") private WebElement productName;
+	@FindBy(how = How.CSS , using  = ".checkout-button") private WebElement checkoutBtn;
+	
+	public CartPage(WebDriver driver) {
+		super(driver);
+		PageFactory.initElements(driver, this);
+	}
+
+	public String getProductName() {
+		return wait.until(ExpectedConditions.visibilityOf(productName)).getText();
+
+	}
+
+	public CheckoutPage clickCheckoutBtn() {
+		wait.until(ExpectedConditions.elementToBeClickable(checkoutBtn)).click();
+
+		return new CheckoutPage(driver);
+	}
+
+}
+
+
+if we r using PageFactory for all pages we can set the step - PageFactory.initElements(driver, this); inside the BasePage constructor
+
+
+if locator is generated dynamically at run time , we cannot use pageFactory , we must use By class
+
+pageFactory can only use static element locators
+we can use both By class and PageFactory
+
+
+CacheLookup - marker annotation to be applied to webElement to indicate that it never changes (that is same instance in DOM will always be used)
+@FindBy(how = How.CSS , using  = ".checkout-button") @CacheLookup private WebElement checkoutBtn;

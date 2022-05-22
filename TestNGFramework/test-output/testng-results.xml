@@ -2,32 +2,32 @@
 <testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-05-22T08:12:37 IST" name="Default suite" finished-at="2022-05-22T08:13:29 IST" duration-ms="51877">
+  <suite started-at="2022-05-22T08:34:08 IST" name="Default suite" finished-at="2022-05-22T08:35:01 IST" duration-ms="52291">
     <groups>
     </groups>
-    <test started-at="2022-05-22T08:12:37 IST" name="Default test" finished-at="2022-05-22T08:13:29 IST" duration-ms="51877">
+    <test started-at="2022-05-22T08:34:08 IST" name="Default test" finished-at="2022-05-22T08:35:01 IST" duration-ms="52291">
       <class name="org.selenium.MyFirstTestCase">
-        <test-method is-config="true" signature="startDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:12:37 IST" name="startDriver" finished-at="2022-05-22T08:12:41 IST" duration-ms="3752" status="PASS">
+        <test-method is-config="true" signature="startDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:34:08 IST" name="startDriver" finished-at="2022-05-22T08:34:13 IST" duration-ms="4659" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startDriver -->
-        <test-method signature="guestCheckoutUsingDirectBankTransfer()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:12:41 IST" name="guestCheckoutUsingDirectBankTransfer" finished-at="2022-05-22T08:12:57 IST" duration-ms="15596" status="PASS">
+        <test-method signature="guestCheckoutUsingDirectBankTransfer()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:34:13 IST" name="guestCheckoutUsingDirectBankTransfer" finished-at="2022-05-22T08:34:29 IST" duration-ms="16239" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- guestCheckoutUsingDirectBankTransfer -->
-        <test-method is-config="true" signature="quitDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:12:57 IST" name="quitDriver" finished-at="2022-05-22T08:12:57 IST" duration-ms="267" status="PASS">
+        <test-method is-config="true" signature="quitDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:34:29 IST" name="quitDriver" finished-at="2022-05-22T08:34:29 IST" duration-ms="319" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- quitDriver -->
-        <test-method is-config="true" signature="startDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:12:57 IST" name="startDriver" finished-at="2022-05-22T08:12:58 IST" duration-ms="1284" status="PASS">
+        <test-method is-config="true" signature="startDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:34:29 IST" name="startDriver" finished-at="2022-05-22T08:34:31 IST" duration-ms="1248" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startDriver -->
-        <test-method signature="loginAndCheckoutUsingDirectBankTransfer()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:12:58 IST" name="loginAndCheckoutUsingDirectBankTransfer" finished-at="2022-05-22T08:13:29 IST" duration-ms="30625" status="PASS">
+        <test-method signature="loginAndCheckoutUsingDirectBankTransfer()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:34:31 IST" name="loginAndCheckoutUsingDirectBankTransfer" finished-at="2022-05-22T08:35:00 IST" duration-ms="29441" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- loginAndCheckoutUsingDirectBankTransfer -->
-        <test-method is-config="true" signature="quitDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:13:29 IST" name="quitDriver" finished-at="2022-05-22T08:13:29 IST" duration-ms="280" status="PASS">
+        <test-method is-config="true" signature="quitDriver()[pri:0, instance:org.selenium.MyFirstTestCase@28f2a10f]" started-at="2022-05-22T08:35:00 IST" name="quitDriver" finished-at="2022-05-22T08:35:01 IST" duration-ms="310" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- quitDriver -->
