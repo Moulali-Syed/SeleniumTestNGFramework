@@ -1,5 +1,6 @@
 org\selenium\pom\base\BasePage.class
 org\selenium\pom\base\BaseTest.class
+org\selenium\pom\constants\DriverType.class
 org\selenium\pom\objects\Product.class
 org\selenium\pom\factory\DriverManager.class
 org\selenium\pom\pages\HomePage.class
@@ -10,3 +11,4 @@ org\selenium\pom\utils\JacksonUtils.class
 org\selenium\pom\objects\User.class
 org\selenium\pom\objects\BillingAddress.class
 org\selenium\pom\pages\CheckoutPage.class
+org\selenium\pom\factory\DriverManager$1.class
