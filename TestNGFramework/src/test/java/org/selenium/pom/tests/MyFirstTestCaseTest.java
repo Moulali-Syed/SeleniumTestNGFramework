@@ -25,7 +25,7 @@ public class MyFirstTestCaseTest extends BaseTest {
 		// using jacksonUtils
 		BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
 		Product product = new Product(1215);
-		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search(searchFor);
+		StorePage storePage = new HomePage(getDriver()).load().clickStoreMenuLink().search(searchFor);
 
 		//Assert.assertEquals(storePage.getTitle(), "Search results: “"+searchFor+"”");
 		Assert.assertTrue(storePage.getTitle().contains("Search results: "));	
@@ -49,7 +49,7 @@ public class MyFirstTestCaseTest extends BaseTest {
 		Product product = new Product(1215);
 		User user = new User("demouser2804", "demouser2804");
 
-		StorePage storePage = new HomePage(driver).load().clickStoreMenuLink().search(searchFor);
+		StorePage storePage = new HomePage(getDriver()).load().clickStoreMenuLink().search(searchFor);
 
 		//Assert.assertEquals(storePage.getTitle(), "Search results: “"+searchFor+"”");
 		Assert.assertTrue(storePage.getTitle().contains("Search results: "));	

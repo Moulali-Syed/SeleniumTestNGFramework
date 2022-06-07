@@ -16,17 +16,26 @@ public class BaseTest {
 	//some restrictions.the driver shouldnot be accessible outside base class and sub classes.if we do so we r inviting
 	//a lot of troubles down the line
 	//with protected whichever classes are inheriting BaseTest class can only see driver[encapsulation - data hiding]
-	protected WebDriver driver;
+	//protected WebDriver driver;
 
+	private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	private void setDriver(WebDriver driver) {
+		this.driver.set(driver);	
+		}
+	
+	protected WebDriver getDriver() {
+		return this.driver.get();
+	}
 	@Parameters("browser")
 	@BeforeMethod
 	public void startDriver(String browser) {
-		driver = new DriverManager().initializeDriver(browser);
+		browser = System.getProperty("browser",browser);
+		setDriver(new DriverManager().initializeDriver(browser));
 	}
 	
 	@AfterMethod
 	public void quitDriver() {
-		driver.quit();
+		getDriver().quit();
 	}
 
 }
